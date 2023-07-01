@@ -6,9 +6,17 @@ import { useEffect } from "react";
 function TodoList() {
   const [todos, setTodos] = useState([]);
 
+  const getToDos = async () => {
+    const result = await fetch("http://localhost:4000/api");
+    const resultJson = await result.json();
+
+    console.log(resultJson);
+    setTodos(resultJson.data);
+  };
+
   useEffect(() => {
-    console.log(todos);
-  }, [todos]);
+    getToDos();
+  }, []);
 
   const addTodo = (todo) => {
     if (!todo.text || /^\s*$/.test(todo.text)) {

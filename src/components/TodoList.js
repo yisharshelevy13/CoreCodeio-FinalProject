@@ -23,13 +23,13 @@ function TodoList(props) {
       return;
     }
 
-    getToDos();
+    // getToDos();
 
-    // const newTodos = [todo, ...todos];
+    // // const newTodos = [todo, ...todos];
 
-    // setTodos(newTodos);
-    // console.log(...todos);
-    // console.log("Crear");
+    // // setTodos(newTodos);
+    // // console.log(...todos);
+    console.log("Crear");
   };
 
   const showDescription = (todoId) => {
@@ -52,13 +52,23 @@ function TodoList(props) {
     );
   };
 
-  const removeTodo = (id) => {
-    const removedArr = [...todos].filter((todo) => todo.id !== id);
+  const removeTodo = async (id) => {
+    const result = await fetch(`https://todo-api-h8ov.onrender.com/api/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const resultJson = await result.json();
 
-    setTodos(removedArr);
+    console.log(resultJson.toDo);
+
+    console.log("delete:", resultJson.todo);
+
+    const removedArr = [...todos].filter((todo) => todo.id !== id);
   };
 
-  const completeTodo = (id) => {
+  function completeTodo(id) {
     let updatedTodos = todos.map((todo) => {
       if (todo.id === id) {
         todo.isComplete = !todo.isComplete;
@@ -66,7 +76,7 @@ function TodoList(props) {
       return todo;
     });
     setTodos(updatedTodos);
-  };
+  }
 
   return (
     <>

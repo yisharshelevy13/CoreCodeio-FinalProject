@@ -43,8 +43,8 @@ function TodoForm(props) {
     props.onSubmit({
       text: input,
       description,
-      // isDone: false,
-      // showDescription: false,
+      isDone: false,
+      showDescription: false,
     });
     setInput("");
     setDescription("");

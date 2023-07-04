@@ -3,11 +3,11 @@ import TodoForm from "./TodoForm";
 import Todo from "./Todo";
 import { useEffect } from "react";
 
-function TodoList() {
+function TodoList(props) {
   const [todos, setTodos] = useState([]);
 
   const getToDos = async () => {
-    const result = await fetch("http://localhost:4000/api");
+    const result = await fetch("https://todo-api-h8ov.onrender.com/api");
     const resultJson = await result.json();
 
     console.log(resultJson);
@@ -23,10 +23,13 @@ function TodoList() {
       return;
     }
 
-    const newTodos = [todo, ...todos];
+    getToDos();
 
-    setTodos(newTodos);
-    console.log(...todos);
+    // const newTodos = [todo, ...todos];
+
+    // setTodos(newTodos);
+    // console.log(...todos);
+    // console.log("Crear");
   };
 
   const showDescription = (todoId) => {

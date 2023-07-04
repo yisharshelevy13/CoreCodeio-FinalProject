@@ -24,14 +24,27 @@ function TodoForm(props) {
     setShowDescription(!showDescription);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const result = await fetch("https://todo-api-h8ov.onrender.com/api", {
+      method: "POST",
+      body: JSON.stringify({
+        title: input,
+        description,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const resultJson = await result.json();
+    console.log(resultJson);
     props.onSubmit({
       text: input,
       description,
-      isDone: false,
-      showDescription: false,
+      // isDone: false,
+      // showDescription: false,
     });
     setInput("");
     setDescription("");

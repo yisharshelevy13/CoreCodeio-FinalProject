@@ -27,25 +27,14 @@ function TodoForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const result = await fetch("https://todo-api-h8ov.onrender.com/api", {
-      method: "POST",
-      body: JSON.stringify({
-        title: input,
-        description,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const resultJson = await result.json();
-    console.log(resultJson);
     props.onSubmit({
-      text: input,
+      // id: resultJson.toDo.id,
+      title: input,
       description,
       isDone: false,
       showDescription: false,
     });
+
     setInput("");
     setDescription("");
   };

@@ -2,7 +2,9 @@
 
 # dependencies
 /node_modules
+/examples
 /.pnp
+/config
 .pnp.js
 
 # testing

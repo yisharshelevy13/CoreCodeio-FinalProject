@@ -19,6 +19,7 @@ const Todo = ({
     value: "",
   });
 
+  // AQUI LOGICA PARA ACTUALIZAR BACKEND
   const submitUpdate = (value) => {
     updateTodo(edit.id, value);
     setEdit({
@@ -34,8 +35,8 @@ const Todo = ({
   return todos.map((todo, index) => (
     // <div>
     <div
-      className={todo.isComplete ? "todo-row complete" : "todo-row"}
-      key={index}
+      className={todo.isDone ? "todo-row complete" : "todo-row"}
+      key={todo.id}
     >
       <div className="description">
         <div
@@ -45,6 +46,8 @@ const Todo = ({
         >
           {todo.title}
         </div>
+
+        <p>{todo.creationDate}</p>
         <div className="icons">
           <RiCheckboxCircleLine
             onClick={() => completeTodo(todo.id)}
@@ -62,7 +65,7 @@ const Todo = ({
             onClick={() =>
               setEdit({
                 id: todo.id,
-                value: todo.text,
+                value: todo.title,
                 description: todo.description,
               })
             }

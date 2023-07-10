@@ -16,7 +16,9 @@ router.get("/", async (request, response, next) => {
         description: toDo.description,
         isDone: Boolean(toDo.isDone),
         creationDate: toDo.creation_date,
-        lastModificationDate: toDo.modified_date,
+        lastModificationDate: !toDo.modified_date
+          ? (toDo.modified_date = "No modified yet")
+          : toDo.modified_date,
       };
     });
     response
@@ -55,34 +57,50 @@ router.post("/", async (request, response, next) => {
   }
 });
 
-// PUT
+// PATCH
 
 router.patch("/:id", async (request, response, next) => {
   try {
     const { id } = request.params;
     const toDo = await get("SELECT * FROM todos WHERE id = ?", [id]);
+    console.log(toDo);
     if (toDo.length === 0) {
       return response
         .status(404)
         .json({ message: "el ID no se encuentra en la db" });
     }
 
-    const { title, description, isDone } = request.body;
+    let { title, description, isDone } = request.body;
+    if (typeof isDone == "undefined") {
+      isDone = toDo[0].isDone;
+    }
+    if (typeof title == "undefined") {
+      title = toDo[0].title;
+    }
+    if (typeof description == "undefined") {
+      description = toDo[0].description;
+    }
+
     const isDoneNumber = Number(isDone);
+
     await run(
       "UPDATE todos SET title = ?, description = ?, isDone = ?, modified_date = DATETIME('now', 'localtime')  WHERE id = ?",
       [title, description, isDoneNumber, id]
     );
-    const getModificationDate = await get("SELECT modified_date FROM todos");
+    const getModificationDate = await get(
+      "SELECT modified_date, creation_date FROM todos WHERE id = ?",
+      [id]
+    );
+    console.log(getModificationDate);
     response.status(200).json({
       message: "To-do updated succesfully",
       toDo: {
         id,
         title,
         description,
-        isDone,
-        ModificationDate:
-          getModificationDate[getModificationDate.length - 1].modified_date,
+        isDone: Boolean(isDone),
+        creationDate: getModificationDate[0].creation_date,
+        ModificationDate: getModificationDate[0].modified_date,
       },
     });
   } catch (error) {

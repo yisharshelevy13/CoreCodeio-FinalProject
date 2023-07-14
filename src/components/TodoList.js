@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TodoForm from "./TodoForm";
 import Todo from "./Todo";
+import FormPopup from "./FormPopup";
 import { useEffect } from "react";
 
 function TodoList(props) {
@@ -47,6 +48,7 @@ function TodoList(props) {
       isDone: false,
       showDescription: false,
       creationDate: resultJson.toDo.creationDate,
+      modificationDate: resultJson.toDo.modificationDate,
     };
 
     const newTodos = [...todos, newToDo];

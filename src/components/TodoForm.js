@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import FormPopup from "./FormPopup";
 import { BsArrowDown, BsPlusCircleFill } from "react-icons/bs";
 import { RiCheckboxCircleLine } from "react-icons/ri";
 
@@ -8,6 +9,7 @@ function TodoForm(props) {
   const [description, setDescription] = useState(
     props.edit ? props.edit.description : ""
   );
+  const [showMessage, setShowMessage] = useState(false);
 
   const inputRef = useRef(null);
 
@@ -35,12 +37,23 @@ function TodoForm(props) {
       showDescription: false,
     });
 
+    setShowMessage(!showMessage);
+
+    // setTimeout(() => {
+    //   setShowMessage(false);
+    // }, 3500);
+
     setInput("");
     setDescription("");
   };
 
+  const handleClosePopup = () => {
+    setShowMessage(!showMessage);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="todo-form">
+      {showMessage && <FormPopup onClose={handleClosePopup} />}
       {props.edit ? (
         <div className="todo-form--update">
           <input
@@ -51,6 +64,7 @@ function TodoForm(props) {
             ref={inputRef}
             className="todo-input edit todo-description"
           />
+
           <textarea
             placeholder="Description"
             value={description}
@@ -70,6 +84,8 @@ function TodoForm(props) {
             value={input}
             onChange={handleChange}
             name="text"
+            type="text"
+            pattern="[A-Za-z0-9\s]*"
             className="todo-input"
             ref={inputRef}
           />

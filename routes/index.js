@@ -16,7 +16,7 @@ router.get("/", async (request, response, next) => {
         description: toDo.description,
         isDone: Boolean(toDo.isDone),
         creationDate: toDo.creation_date,
-        lastModificationDate: !toDo.modified_date
+        modificationDate: !toDo.modified_date
           ? (toDo.modified_date = "No modified yet")
           : toDo.modified_date,
       };
@@ -38,7 +38,9 @@ router.post("/", async (request, response, next) => {
       "INSERT INTO todos (title, description, creation_date) VALUES(?, ?, DATETIME('now', 'localtime'))",
       [title, description]
     );
-    const getCreationDate = await get("SELECT creation_date FROM todos");
+    const getCreationDate = await get(
+      "SELECT creation_date, modified_date FROM todos"
+    );
     // console.log(getCreationDate);
     // console.log(data);
     response.status(200).json({
@@ -49,6 +51,11 @@ router.post("/", async (request, response, next) => {
         description,
         isDone: false,
         creationDate: getCreationDate[getCreationDate.length - 1].creation_date,
+        modificationDate: !getCreationDate[getCreationDate.length - 1]
+          .modified_date
+          ? (getCreationDate[getCreationDate.length - 1].modified_date =
+              "No modified yet")
+          : getCreationDate[getCreationDate.length - 1].modified_date,
       },
     });
   } catch (error) {
@@ -100,7 +107,7 @@ router.patch("/:id", async (request, response, next) => {
         description,
         isDone: Boolean(isDone),
         creationDate: getModificationDate[0].creation_date,
-        ModificationDate: getModificationDate[0].modified_date,
+        modificationDate: getModificationDate[0].modified_date,
       },
     });
   } catch (error) {

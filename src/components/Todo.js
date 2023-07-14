@@ -46,8 +46,13 @@ const Todo = ({
         >
           {todo.title}
         </div>
+        <p>
+          Creation Date: <br></br> {todo.creationDate}
+        </p>
+        <p>
+          Modification Date: <br></br> {todo.modificationDate}
+        </p>
 
-        <p>{todo.creationDate}</p>
         <div className="icons">
           <RiCheckboxCircleLine
             onClick={() => completeTodo(todo.id)}
